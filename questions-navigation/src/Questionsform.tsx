@@ -10,6 +10,7 @@ const Questions = [
 export default function Questionsform(){
   const [currentStep, setCurrentStep] = useState(0);
   const [formData, setFormData]= useState<Record<string, string>>({});
+  const [submitted, setSubmitted] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({...formData, [e.target.name]: e.target.value});
@@ -17,13 +18,7 @@ export default function Questionsform(){
 
   const currentQuestion = Questions[currentStep];
 
-  const prevStep = () => {
-    setCurrentStep(currentStep - 1)
-  }
-
-  const NextStep = () => {
-    setCurrentStep(currentStep + 1)
-  }
+  
 
   return(
     <div>
@@ -35,8 +30,31 @@ export default function Questionsform(){
       }
       onChange={handleChange}
       className="w-full border p-2 rounded"/>
-      <button onClick={prevStep} disabled={currentStep === 0}>Prev Question</button>
-      <button onClick={NextStep} disabled={currentStep === Questions.length-1}>Next Question</button>
+      <button onClick={() => setCurrentStep(currentStep - 1)} disabled={currentStep === 0}>Prev Question</button>
+      <button onClick={() => {
+        if(currentStep === Questions.length -1){
+          setSubmitted(true);
+        }
+        else{
+          setCurrentStep(currentStep + 1);
+        }
+      }}>
+        {currentStep === Questions.length - 1 ? "Submit" : "Next Question"}
+      </button>
+      <div>
+        {submitted && (
+          <div>
+            <h2>Survey Results</h2>
+            <ul>
+              {Object.entries(formData).map(([key, value]) => (
+                <li key={key}>
+                  <strong>{value}</strong>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+      </div>
     </div>
   )
 }
