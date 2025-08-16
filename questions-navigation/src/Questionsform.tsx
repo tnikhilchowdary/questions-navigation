@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 
 
 const Questions = [
@@ -8,7 +8,9 @@ const Questions = [
 ];
 
 export default function Questionsform(){
-  const currentQuestion = Questions[0]
+  const [currentStep, setCurrentStep] = useState(0);
+  const currentQuestion = Questions[currentStep];
+  
   return(
     <div>
       <h1>Question 1 of {Questions.length}</h1>
